@@ -7,8 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.tae.myapplication.dagger2.Component.MyComponent;
+import com.tae.myapplication.entity.ApiRetrofit;
+import com.tae.myapplication.entity.MotoPojo;
+
+import java.lang.annotation.Inherited;
+import java.util.List;
+
 import javax.inject.Inject;
 import dagger.android.AndroidInjection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -18,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Inject
     SharedPreferences sharedPreferences;
+
+    @Inject
+    ApiRetrofit apiRetrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +41,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        myComponent = DaggerMyComponent.builder().sharedPrefModule(new SharedPrefModule(this)).build();
 //        myComponent.inject(this);
 
+    apiRetrofit.getMotos().enqueue(new Callback<List<MotoPojo>>() {
+        @Override
+        public void onResponse(Call<List<MotoPojo>> call, Response<List<MotoPojo>> response) {
+            System.out.println("------------->>>  "+response.body());
+        }
 
+        @Override
+        public void onFailure(Call<List<MotoPojo>> call, Throwable t) {
+
+        }
+    });
     }
+
 
     private void initViews() {
         btnGet = findViewById(R.id.btnGet);

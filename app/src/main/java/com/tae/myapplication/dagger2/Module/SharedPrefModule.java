@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.tae.myapplication.entity.ApiRetrofit;
+import com.tae.myapplication.entity.RetrofitClient;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -33,5 +36,11 @@ public class SharedPrefModule {
     @Provides
     public SharedPreferences provideSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    @Singleton
+    @Provides
+    public ApiRetrofit provideRetrofit ()
+    {return RetrofitClient.callRetrofit().create(ApiRetrofit.class);
     }
 }
